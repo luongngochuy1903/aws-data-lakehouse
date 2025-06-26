@@ -25,7 +25,7 @@ bronze_frames = glueContext.create_dynamic_frame.from_catalog(
 
 df = bronze_frames.toDF()
 df = df.drop("subreddit.name")
-df = df.withColumn("selftext_split", split(col("selftext"), " "))
+df = df.withColumn("title_split", split(col("title")))
 df = df.withColumn("createddate", to_date(from_unixtime(col("createddate").cast("long"))))
 dyf = DynamicFrame.fromDF(df, glueContext, "dyf_with_partitions")
 
