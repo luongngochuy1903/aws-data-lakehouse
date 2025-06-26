@@ -6,6 +6,7 @@ from awsglue.dynamicframe import DynamicFrame
 from awsglue.context import GlueContext
 from awsglue.job import Job
 from pyspark.sql.functions import split, col, to_date, from_unixtime
+from utils.constants import GOLD_POST
 
 ## @params: [JOB_NAME]
 args = getResolvedOptions(sys.argv, ['JOB_NAME'])
@@ -34,7 +35,7 @@ glueContext.write_dynamic_frame.from_options(
     frame=dyf,
     connection_type="s3",
     format="parquet",
-    connection_options={"path": "s3://luonghuy-datalakehouse/gold/post/", "partitionKeys": ["createddate"]},
+    connection_options={"path": GOLD_POST, "partitionKeys": ["createddate"]},
     transformation_ctx="write_silver"
     )
 job.commit()

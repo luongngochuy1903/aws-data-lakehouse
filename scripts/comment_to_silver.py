@@ -6,6 +6,7 @@ from awsglue.context import GlueContext
 from awsglue.dynamicframe import DynamicFrame
 from awsglue.job import Job
 from pyspark.sql.functions import lit, current_date
+from utils.constants import SILVER_COMMENT
 
 ## @params: [JOB_NAME]
 args = getResolvedOptions(sys.argv, ['JOB_NAME'])
@@ -34,7 +35,7 @@ glueContext.write_dynamic_frame.from_options(
     frame=dyf,
     connection_type="s3",
     format="parquet",
-    connection_options={"path": "s3://luonghuy-datalakehouse/silver/comment/", "partitionKeys": ["createddate"]},
+    connection_options={"path": SILVER_COMMENT, "partitionKeys": ["createddate"]},
     transformation_ctx="write_silver"
     )
 job.commit()

@@ -5,7 +5,8 @@ from pyspark.context import SparkContext
 from awsglue.context import GlueContext
 from awsglue.dynamicframe import DynamicFrame
 from awsglue.job import Job
-from pyspark.sql.functions import lit, current_date, col
+from pyspark.sql.functions import current_date, col
+from utils.constants import INPUT_COMMENT, BRONZE_COMMENT
 
 ## @params: [JOB_NAME]
 args = getResolvedOptions(sys.argv, ['JOB_NAME'])
@@ -23,7 +24,7 @@ dynamic_frames = glueContext.create_dynamic_frame.from_options(
     connection_type="s3",
     format="csv",
     connection_options={
-        "paths": ["s3://luonghuy-datalakehouse/input/comment/"],
+        "paths": [INPUT_COMMENT],
         "recurse": True,
         "withHeader": True,
     },
@@ -43,7 +44,7 @@ glueContext.write_dynamic_frame.from_options(
     frame=dyf,
     connection_type="s3",
     format="csv",
-    connection_options={"path": "s3://luonghuy-datalakehouse/bronze/comment/", "partitionKeys": ["date"]},
+    connection_options={"path": BRONZE_COMMENT, "partitionKeys": ["date"]},
     transformation_ctx="write_bronze"
     )
 job.commit()
